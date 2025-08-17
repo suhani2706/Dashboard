@@ -46,6 +46,27 @@ const statCards = [
   },
 ];
 
+// ✅ Custom label function for pie chart
+const renderCustomLabel = ({ cx, cy, midAngle, outerRadius, index }) => {
+  const RADIAN = Math.PI / 180;
+  const radius = outerRadius + 20; // distance outside the pie
+  const x = cx + radius * Math.cos(-midAngle * RADIAN);
+  const y = cy + radius * Math.sin(-midAngle * RADIAN);
+
+  return (
+    <text
+      x={x}
+      y={y}
+      fill={COLORS[index % COLORS.length]}
+      textAnchor={x > cx ? "start" : "end"}
+      dominantBaseline="central"
+      fontSize={12}
+    >
+      {pieData[index].name} ({pieData[index].value})
+    </text>
+  );
+};
+
 const Dashboard = () => {
   return (
     <div className="p-6 text-gray-900 dark:text-white space-y-12">
@@ -84,15 +105,14 @@ const Dashboard = () => {
       <div className="w-full h-64 bg-white dark:bg-gray-800 rounded-lg shadow p-4">
         <h2 className="text-lg font-semibold mb-2">📊 Product Sales</h2>
         <ResponsiveContainer width="100%" height="100%">
-        <BarChart data={barData} margin={{ top: 10, right: 10, left: 10, bottom: 30 }}>
+          <BarChart data={barData} margin={{ top: 10, right: 10, left: 10, bottom: 30 }}>
             <CartesianGrid strokeDasharray="3 3" />
             <XAxis dataKey="name" />
             <YAxis />
             <Tooltip />
             <Bar dataKey="sales" fill="#10b981" />
-        </BarChart>
+          </BarChart>
         </ResponsiveContainer>
-
       </div>
 
       {/* Pie Chart */}
@@ -105,8 +125,8 @@ const Dashboard = () => {
               cx="50%"
               cy="50%"
               outerRadius={80}
-              label
               dataKey="value"
+              label={renderCustomLabel}
             >
               {pieData.map((entry, index) => (
                 <Cell key={index} fill={COLORS[index % COLORS.length]} />
