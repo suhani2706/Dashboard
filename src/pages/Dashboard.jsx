@@ -47,25 +47,25 @@ const statCards = [
 ];
 
 // ✅ Custom label function for pie chart
-const renderCustomLabel = ({ cx, cy, midAngle, outerRadius, index }) => {
-  const RADIAN = Math.PI / 180;
-  const radius = outerRadius + 20; // distance outside the pie
-  const x = cx + radius * Math.cos(-midAngle * RADIAN);
-  const y = cy + radius * Math.sin(-midAngle * RADIAN);
+// const renderCustomLabel = ({ cx, cy, midAngle, outerRadius, index }) => {
+//   const RADIAN = Math.PI / 180;
+//   const radius = outerRadius + 50; // 👈 more spacing from pie
+//   const x = cx + radius * Math.cos(-midAngle * RADIAN);
+//   const y = cy + radius * Math.sin(-midAngle * RADIAN);
 
-  return (
-    <text
-      x={x}
-      y={y}
-      fill={COLORS[index % COLORS.length]}
-      textAnchor={x > cx ? "start" : "end"}
-      dominantBaseline="central"
-      fontSize={12}
-    >
-      {pieData[index].name} ({pieData[index].value})
-    </text>
-  );
-};
+//   return (
+//     <text
+//       x={x}
+//       y={y}
+//       fill={COLORS[index % COLORS.length]}
+//       textAnchor={x > cx ? "start" : "end"}
+//       dominantBaseline="central"
+//       fontSize={12}
+//     >
+//       {pieData[index].name} ({pieData[index].value})
+//     </text>
+//   );
+// };
 
 const Dashboard = () => {
   return (
@@ -89,7 +89,7 @@ const Dashboard = () => {
 
       {/* Line Chart */}
       <div className="w-full h-64 bg-white dark:bg-gray-800 rounded-lg shadow p-4">
-        <h2 className="text-lg font-semibold mb-2">📈 Monthly Revenue</h2>
+        <h2 className="text-lg font-semibold mb-2">Monthly Revenue</h2>
         <ResponsiveContainer width="100%" height="100%">
           <LineChart data={lineData} margin={{ top: 10, right: 10, left: 10, bottom: 30 }}>
             <CartesianGrid strokeDasharray="3 3" />
@@ -103,7 +103,7 @@ const Dashboard = () => {
 
       {/* Bar Chart */}
       <div className="w-full h-64 bg-white dark:bg-gray-800 rounded-lg shadow p-4">
-        <h2 className="text-lg font-semibold mb-2">📊 Product Sales</h2>
+        <h2 className="text-lg font-semibold mb-2">Product Sales</h2>
         <ResponsiveContainer width="100%" height="100%">
           <BarChart data={barData} margin={{ top: 10, right: 10, left: 10, bottom: 30 }}>
             <CartesianGrid strokeDasharray="3 3" />
@@ -117,22 +117,23 @@ const Dashboard = () => {
 
       {/* Pie Chart */}
       <div className="w-full h-64 bg-white dark:bg-gray-800 rounded-lg shadow p-4">
-        <h2 className="text-lg font-semibold mb-2">🥧 Category Share</h2>
+        <h2 className="text-lg font-semibold mb-2">Category Share</h2>
         <ResponsiveContainer width="100%" height="100%">
           <PieChart>
             <Pie
               data={pieData}
               cx="50%"
               cy="50%"
-              outerRadius={80}
+              outerRadius={70}
               dataKey="value"
-              label={renderCustomLabel}
+              // label={renderCustomLabel}
+              // labelLine 
             >
               {pieData.map((entry, index) => (
                 <Cell key={index} fill={COLORS[index % COLORS.length]} />
               ))}
             </Pie>
-            <Legend />
+            <Legend verticalAlign="bottom" height={60} />
             <Tooltip />
           </PieChart>
         </ResponsiveContainer>
